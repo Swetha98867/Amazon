@@ -1,1 +1,32 @@
 // Added feature 1
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Clean') {
+            steps {
+                deleteDir()
+            }
+        }
+
+        stage('Checkout') {
+            steps {
+                git branch: 'master',
+                    url: 'https://github.com/Swetha98867/Amazon.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'cp Amazon-Web/target/*.war /opt/tomcat9/webapps/'
+            }
+        }
+    }
+}
