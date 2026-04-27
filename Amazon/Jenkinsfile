@@ -1,1 +1,10 @@
-// Added feature 1
+pipeline{
+  agent any
+  stages{
+    stage('sample'){
+      steps{
+        echo "pipeline is working through scm repo url"
+      }
+    }
+  }
+}
