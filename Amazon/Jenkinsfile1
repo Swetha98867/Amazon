@@ -18,7 +18,7 @@ sh 'mvn clean package'
     }
     stage('deploy to tomcat port 8081'){
       steps{
-        sh 'cp Amazon/target/*.war /opt/tomcat9/webapps/'
+        sh 'cp Amazon/Amazon-Web/target/Amazon.war /opt/tomcat9/webapps/'
       }
     }
     stage('Open web application'){
