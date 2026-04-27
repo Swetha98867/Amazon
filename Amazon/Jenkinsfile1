@@ -1,0 +1,30 @@
+pipeline{
+  agent any
+  tools{
+    maven 'Maven3'
+  }
+  stages{
+    stage('github repo url'){
+      steps{
+        git branch: 'master', url: 'https://github.com/Swetha98867/Amazon.git'
+      }
+    }
+    stage('build'){
+steps{
+dir('Amazon'){
+sh 'mvn clean package'
+}
+}
+    }
+    stage('deploy to tomcat port 8081'){
+      steps{
+        sh 'cp Amazon/Amazon-Web/target/Amazon.war /opt/tomcat9/webapps/'
+      }
+    }
+    stage('Open web application'){
+      steps{
+        echo "Application URL: http://localhost:8080/amazon"
+      }
+    }
+  }
+}

@@ -1,1 +1,37 @@
-// Added feature 1
+/*pipeline{
+  agent any
+  stages{
+    stage('sample'){
+      steps{
+        echo "pipeline is working through scm repo url"
+      }
+    }
+  }
+}
+*/
+/*pipeline{
+  agent any
+  stages{
+    stage('build'){
+      steps{
+        echo "this is build stage"
+      }
+    }
+    stage('test'){
+      steps{
+        echo "this is test stage"
+      }
+    }
+    stage('deploy'){
+      steps{
+        echo "this is deploy stage"
+      }
+    }
+    stage('result'){
+      steps{
+        echo "script working fine"
+      }
+    }
+  }
+}
+*/
