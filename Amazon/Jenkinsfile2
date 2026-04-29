@@ -34,7 +34,7 @@ pipeline {
             steps {
                 script {
                     retry(3) {   // retry intermittent failures
-                        sh 'mvn clean install -X'
+                        sh 'mvn -f Amazon-Web/pom.xml clean install -X'
                     }
                 }
             }
