@@ -25,7 +25,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 retry(2) {
-                    git url: 'https://github.com/Swetha98867/Amazon.git', branch: 'main'
+                    git url: 'https://github.com/Swetha98867/Amazon.git', branch: 'master'
                 }
             }
         }
