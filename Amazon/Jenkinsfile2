@@ -1,0 +1,93 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'Maven3'   // configure in Jenkins
+    }
+
+    options {
+        timeout(time: 20, unit: 'MINUTES')   // avoid hanging builds
+        timestamps()                         // better logs
+    }
+
+    environment {
+        ENV = "dev"
+    }
+
+    stages {
+
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage('Checkout Code') {
+            steps {
+                retry(2) {
+                    git url: 'https://github.com/Swetha98867/Amazon.git', branch: 'main'
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    retry(3) {   // retry intermittent failures
+                        sh 'mvn clean install -X'
+                    }
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    sh 'mvn test'
+                }
+            }
+        }
+
+        stage('Simulate Failure (for practice)') {
+            steps {
+                script {
+                    // Random failure simulation
+                    def rand = new Random().nextInt(2)
+                    if (rand == 0) {
+                        error "Simulated intermittent failure"
+                    }
+                }
+            }
+        }
+
+        stage('Check System Health') {
+            steps {
+                sh '''
+                echo "Disk Usage:"
+                df -h
+
+                echo "Memory:"
+                free -m
+
+                echo "CPU:"
+                top -b -n1 | head -20
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Build Success ✅"
+        }
+        failure {
+            echo "Build Failed ❌"
+
+            // Archive logs for debugging
+            archiveArtifacts artifacts: '**/target/*.log', allowEmptyArchive: true
+        }
+        always {
+            echo "Pipeline completed"
+        }
+    }
+}
